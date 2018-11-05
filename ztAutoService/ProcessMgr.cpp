@@ -14,22 +14,48 @@ CProcessMgr::~CProcessMgr(void)
 {
 }
 
-bool CProcessMgr::AddTask(PTCHAR szPath, PTCHAR szCmd, int nRestartHour, int nRsStartDur)
+void CProcessMgr::Start()
 {
-    ProcessInfo* newProcess = new ProcessInfo;
-    if(nullptr == newProcess)
-        return false;
-    newProcess->lPID = 0;
-    _tcsncpy_s(newProcess->szPath, MAX_PATH, szPath, MAX_PATH);
-    _tcsncpy_s(newProcess->szCmd, MAX_PATH, szCmd, MAX_PATH);
-    newProcess->nReStartHour = nRestartHour;
-    newProcess->nRsStartDur = nRsStartDur;
+    // 配置文件路径
+    TCHAR szFilePath[MAX_PATH] = { 0 };
+    TCHAR szDrive[_MAX_DRIVE]  = { 0 };
+    TCHAR szDir[_MAX_DIR]      = { 0 };
+    TCHAR szFname[_MAX_FNAME]  = { 0 };
+    TCHAR szExt[_MAX_EXT]      = { 0 };
+    TCHAR szConfPath[MAX_PATH] = { 0 };
 
-    m_vecProcess.push_back(newProcess);
+    ::GetModuleFileName(NULL, szFilePath, MAX_PATH);
+    _wsplitpath_s(szFilePath, szDrive, szDir, szFname, szExt);
+    wsprintf(szConfPath, _T("%s%sconfig.ini"), szDrive, szDir);
+    //LogInfo(_T("config file: %s"), szConfPath);
 
-    return true;
+    //配置内容
+    int nNumber = GetPrivateProfileInt(_T("common"), _T("number"), 0, szConfPath);
+    for (int i=0; i<nNumber; i++)
+    {
+        ProcessInfo* newProcess = new ProcessInfo;
+        if(nullptr == newProcess) return;
+        ZeroMemory(newProcess->szPath,MAX_PATH);
+        ZeroMemory(newProcess->szCmd,MAX_PATH);
+
+        TCHAR szApp[MAX_PATH] = { 0 };
+        wsprintf(szApp, _T("file%d"), i + 1);
+
+        GetPrivateProfileString(szApp, _T("path"), _T(""), newProcess->szPath, MAX_PATH - 1, szConfPath);
+        GetPrivateProfileString(szApp, _T("cmd"), _T(""), newProcess->szCmd, MAX_PATH - 1, szConfPath);
+        INT nProtect = GetPrivateProfileInt(szApp, _T("protect"), 0, szConfPath);
+        INT nRestartHour = GetPrivateProfileInt(szApp, _T("rshour"), -1, szConfPath);
+        INT nRestartDur = GetPrivateProfileInt(szApp, _T("rsdur"), 0, szConfPath);
+
+        newProcess->lPID = 0;
+        newProcess->bProtect = nProtect != 0;
+        newProcess->nReStartHour = nRestartHour;
+        newProcess->nRsStartDur = nRestartDur;
+
+        m_vecProcess.push_back(newProcess);
+        //LogInfo(_T("execute:%s finish"),szPath);
+    }
 }
-
 
 void CProcessMgr::Stop()
 {
@@ -50,12 +76,16 @@ bool CProcessMgr::ProtectRun()
     for (auto& pProcess:m_vecProcess)
     {
         if ( pProcess->lPID == 0                        //< 尚未启动
-            || !Find(pProcess->lPID)                    //< 进程异常退出
-            || (pProcess->nReStartHour >= 0
-               && difftime(now,pProcess->nStartTime) > 3600   //< 60*60
-               && timeinfo.tm_hour == pProcess->nReStartHour)  //< 重启时间
-            || (pProcess->nRsStartDur > 0
-               && difftime(now,pProcess->nStartTime) > pProcess->nRsStartDur*216000) //运行时间
+            || (pProcess->bProtect
+                && (!Find(pProcess->lPID)                    //< 进程异常退出
+                    || (pProcess->nReStartHour >= 0
+                        && pProcess->nReStartHour <= 23
+                        && difftime(now,pProcess->nStartTime) > 3600   //< 60*60
+                        && timeinfo.tm_hour == pProcess->nReStartHour)  //< 重启时间
+                    || (pProcess->nRsStartDur > 0
+                        && difftime(now,pProcess->nStartTime) > pProcess->nRsStartDur*216000) //运行时间
+                    )
+                )
             )
         {
             // 重启程序

@@ -8,9 +8,11 @@ using namespace std;
 struct ProcessInfo
 {
     DWORD   lPID;             //< 进程ID
+    time_t  nStartTime;       //< 程序启动时间
+
     TCHAR   szPath[MAX_PATH]; //< 执行文件路径
     TCHAR   szCmd[MAX_PATH];  //< 运行参数
-    time_t  nStartTime;       //< 程序启动时间
+    bool    bProtect;         //< 是否守护进程
     int     nReStartHour;     //< 每天重启的时间，单位时
     int     nRsStartDur;      //< 重启间隔
 };
@@ -25,14 +27,9 @@ public:
     ~CProcessMgr(void);
 
     /**
-     * 启动一个子进程
-     * @param szPath 可执行文件路径
-     * @param szCmd 执行参数
-     * @param nRestartHour 每天重启的时间
-     * @param nRsStartDur 运行经过多少时间重启
-     * @return true成功，false失败
+     * 启动pm
      */
-    bool AddTask(PTCHAR szPath, PTCHAR szCmd, int nRestartHour, int nRsStartDur);
+    void Start();
 
     /**
      * 保护线程

@@ -3,3 +3,7 @@
 /.vs
 *.user
 /ztAutoService/Release
+/ztAutoService/Debug
+/*.opensdf
+/*.sdf
+/*.suo

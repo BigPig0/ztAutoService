@@ -1,37 +1,35 @@
 # ztAutoService
 
 #### 项目介绍
-windows开机自启指定程序的服务，不需要用户登录。
 
-#### 软件架构
-软件架构说明
+windows开机自启指定程序的服务，不需要用户登录。
+本项目以vs2012建立，可自行升级
+
+#### 配置文件说明
+
+在exe文件目录放置一个名为config.ini的配置文件，内容按如下格式
+[common]
+number = 2
+;需要管理的进程数量，各个进程的配置分别是从file1到fileN
+
+[file1]
+path = D:/a.exe
+;可执行程序、脚本等文件路径或命令
+cmd = -a -b -c -d
+;进程启动参数
+rshour = 5
+;进程每天定时重启的时间，为小时，有效值0~23
+rsdur = 8
+;进程运行达到多少小时就重启一次，>0时有效
+
+[file2]
+path = D:/b.exe
+cmd = -a -b -c -d
+rsdur = 100
 
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. ztAutoService -i 安装系统服务，并自动启动
+2. ztAutoService -u 卸载系统服务
+3. ztAutoService -s 以用户进程方式执行程序，作为进程管理工具使用

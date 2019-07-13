@@ -203,13 +203,13 @@ bool CProcessMgr::Kill(DWORD lPID)
         HANDLE h=OpenProcess(PROCESS_TERMINATE,FALSE,lPID);
         if(NULL == h)
         {
-            printf("kill process %ld sucess", lPID);
+            printf("kill process %ld sucess\r\n", lPID);
             return true;
         }
         if(FALSE == TerminateProcess(h,0))
         {
             DWORD dwError = GetLastError();
-            printf("TerminateProcess failed:%d",dwError);
+            printf("TerminateProcess failed:%d\r\n",dwError);
         }
         CloseHandle(h);
         Sleep(100);
@@ -218,11 +218,11 @@ bool CProcessMgr::Kill(DWORD lPID)
     HANDLE h=OpenProcess(PROCESS_TERMINATE,FALSE,lPID);
     if(NULL == h)
     {
-        printf("kill process %ld sucess", lPID);
+        printf("kill process %ld sucess\r\n", lPID);
         return true;
     }
 
     CloseHandle(h);
-    printf("process is still exist:%ld(handle:%d)", lPID,h);
+    printf("process is still exist:%ld(handle:%d)\r\n", lPID,h);
     return false;
 }

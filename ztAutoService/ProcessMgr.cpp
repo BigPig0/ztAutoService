@@ -156,16 +156,24 @@ bool CProcessMgr::CreateChildProcess(PTCHAR szPath, PTCHAR szCmd, DWORD& lPID)
     pi.hThread = INVALID_HANDLE_VALUE;
 
     TCHAR szRun[MAX_PATH * 2] = { 0 };
-    wsprintf(szRun, _T("%s %s"), szPath, szCmd);
+    wsprintf(szRun, _T("\"%s\" %s"), szPath, szCmd);
 
-    if (!CreateProcess(NULL, szRun, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi))
+    TCHAR szFullPath[MAX_PATH] = {0};
+    TCHAR szDrive[_MAX_DRIVE];
+    TCHAR szDir[_MAX_DIR];
+    TCHAR szFileName[_MAX_FNAME];
+    TCHAR szExt[_MAX_EXT];
+    _wsplitpath_s(szPath, szDrive, szDir, szFileName, szExt);
+    wsprintf(szFullPath,_T("%s%s"),szDrive,szDir);
+    //LogInfo(szFullPath);
+    if (!CreateProcess(NULL, szRun, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, szFullPath, &si, &pi))
     {
         LogError(_T("CreateProcess failed:%d"), GetLastError());
         goto end;
     }
     lPID = pi.dwProcessId;
     bRes = true;
-
+    //LogInfo(_T("CreateProcess sucess:%d"), lPID);
 end:
     if(INVALID_HANDLE_VALUE != childStdInWrite)
         CloseHandle(childStdInWrite);

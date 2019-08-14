@@ -68,4 +68,6 @@ private:
     bool Kill(DWORD lPID);
 
     vector<ProcessInfo*>    m_vecProcess;       //< 子进程信息,单线程不需要锁
+
+    int  m_running; //正在执行的线程数
 };

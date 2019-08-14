@@ -70,6 +70,8 @@ void CProcessMgr::Stop()
 
 bool CProcessMgr::ProtectRun()
 {
+    //printf("ProtectRun\n");
+    m_running = 0;
     struct tm timeinfo;
     time_t now = time(NULL);
     localtime_s(&timeinfo, &now);
@@ -89,6 +91,7 @@ bool CProcessMgr::ProtectRun()
             )
         {
             // 重启程序
+            m_running++;
             std::thread t([&](){
                 try
                 {
@@ -102,6 +105,10 @@ bool CProcessMgr::ProtectRun()
             t.detach();
         }
     }
+    while (m_running)
+    {
+        Sleep(10);
+    }
     return true;
 }
 
@@ -110,22 +117,26 @@ bool CProcessMgr::RunChild(ProcessInfo* pro)
     if(pro->lPID != 0 && Find(pro->lPID) && !Kill(pro->lPID))
     {
         LogError(_T("kill process:%d failed"), pro->lPID);
+        m_running--;
         return false;
     }
 
     if(!CreateChildProcess(pro->szPath, pro->szCmd, pro->lPID))
     {
         LogError(_T("restart process failed"));
+        m_running--;
         return false;
     }
 
     pro->nStartTime = time(NULL);
 
+    m_running--;
     return true;
 }
 
 bool CProcessMgr::CreateChildProcess(PTCHAR szPath, PTCHAR szCmd, DWORD& lPID)
 {
+    wprintf(L"%s %s\n", szPath, szCmd);
     bool bRes = false;
 
     /** 创建管道，重定向子进程标准输入 */
@@ -182,10 +193,13 @@ end:
     if(INVALID_HANDLE_VALUE != pi.hThread)
         CloseHandle(pi.hThread);
 
-    if(bRes)
+    if(bRes) {
+        wprintf(_T("RunChild:%s, PID:%ld success\n"),szRun,pi.dwProcessId);
         LogSucess(_T("RunChild:%s, PID:%ld success"),szRun,pi.dwProcessId);
-    else
+    } else {
+        wprintf(_T("RunChild:%s, PID:%ld failed\n"),szRun,pi.dwProcessId);
         LogError(_T("RunChild:%s, PID:%ld failed"),szRun,pi.dwProcessId);
+    }
 
     return bRes;
 }

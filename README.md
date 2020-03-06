@@ -4,6 +4,10 @@
 
 * windows下的进程管理器，能注册为服务随windows开机启动。
 * 本项目以vs2012建立
+* 编译前需要在属性管理器中将Microsoft.Cpp.x64.user(或Microsoft.Cpp.Win32.user)中修改以下：(或者在每个项目属性中都修改一次)
+* * 常规-输出目录：$(SolutionDir)..\out\$(Platform)_$(Configuration)\
+* * 常规-中间目录：$(SolutionDir)..\out\Temp\$(ProjectName)\$(Platform)_$(Configuration)\
+* * 链接1器-常规-附加库目录：$(OutDir);%(AdditionalLibraryDirectories)
 
 #### 配置文件说明
 

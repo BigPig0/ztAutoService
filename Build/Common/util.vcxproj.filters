@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\util\Clock.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\EncodeConvert.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Endian.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\guid.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\LastError.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\MailSlot.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\memfile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\MiniDump.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Mutex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\NetStreamMaker.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Profile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Runnable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Settings.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Singleton.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\StringHandle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\ThreadPool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\TimeFormat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\util_def.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\util_public.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\winfile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\AbstractFile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\File.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\util\Log.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\common\util\EncodeConvert.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\guid.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\MailSlot.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\memfile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\MiniDump.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\NetStreamMaker.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\Settings.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\StringHandle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\ThreadPool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\Timer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\Clock.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\winfile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\AbstractFile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\File.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\util\Log.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

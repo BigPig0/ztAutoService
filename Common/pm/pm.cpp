@@ -148,7 +148,9 @@ void CPM::AddTasks(std::string path) {
                 if(attr->type == cJSON_String)
                     if(!strcmp(attr->valuestring, "yes"))
                         p->daemon = true;
-            } else if(!strcmp(attr->string, "rstime")){
+            } else if(!strcmp(attr->string, "delay")){
+                p->delay = attr->valueint;
+            }  else if(!strcmp(attr->string, "rstime")){
                 p->rstime = attr->valuestring;
             } else if(!strcmp(attr->string, "rsdur")){
                 p->rsdur = attr->valueint;
@@ -222,7 +224,15 @@ void CPM::Protect() {
                 m_nNum--;
             });
             t.detach();
-        } else if(pProcess->daemon && !Find(pProcess->pid)) { //程序异常退出
+        } else if(pProcess->daemon && (pProcess->shutdown>0 || !Find(pProcess->pid))) { //程序异常退出
+            if(pProcess->delay > 0) {
+                if(pProcess->shutdown == 0) {
+                    pProcess->shutdown = now;
+                    continue;
+                } else if(difftime(now, pProcess->shutdown) < pProcess->delay) {
+                    continue;
+                }
+            }
             m_nNum++;
             Log::debug("protect %s %s", pProcess->path.c_str(), pProcess->args.c_str());
             std::thread t([&](){
@@ -326,6 +336,7 @@ bool CPM::RunChild(Process* pro) {
     }
 
     pro->startup = time(NULL);
+    pro->shutdown = 0;
 
     //m_nNum--;
     return true;
